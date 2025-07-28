@@ -8,6 +8,7 @@ import { SupabaseService } from './supabase/supabase.service';
 import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
+
 @Module({
   imports: [
     UserModule,

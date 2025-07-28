@@ -47,8 +47,8 @@ model Course {
   teacherId   String       @db.Uuid 
   teacher     User         @relation("TeacherCourses", fields: [teacherId], references: [id]) 
   chapters     Chapter[]
-  categorieId String @db.Uuid
-  gategorie  Category @relation(fields: [categorieId], references: [id]) 
+  categorieId String? @db.Uuid
+  gategorie  Category? @relation(fields: [categorieId], references: [id]) 
 }
 
 model Enrollment {
