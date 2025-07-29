@@ -36,16 +36,24 @@ export class CourseController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.courseService.findOne(+id);
+    return this.courseService.findOne(id);
   }
 
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {
-    return this.courseService.update(+id, updateCourseDto);
+  async update(
+    @Request() req,
+    @Param('id') courseId: string,
+    @Body() updateCourseDto: UpdateCourseDto,
+  ) {
+    const teacherId = req.user.userId;
+    return this.courseService.update(courseId, teacherId, updateCourseDto);
   }
 
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.courseService.remove(+id);
+  remove(@Request() req, @Param('id') courseId: string) {
+    const teacherId = req.user.userId;
+    return this.courseService.remove(courseId, teacherId);
   }
 }

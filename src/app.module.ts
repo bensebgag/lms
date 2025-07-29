@@ -8,6 +8,7 @@ import { SupabaseService } from './supabase/supabase.service';
 import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
+import { CourseModule } from './course/course.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AuthModule } from './auth/auth.module';
       envFilePath: '.env',
     }),
     AuthModule,
+    CourseModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, SupabaseService, AuthService],

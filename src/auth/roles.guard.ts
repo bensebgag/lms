@@ -1,4 +1,9 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -10,13 +15,23 @@ export class RolesGuard implements CanActivate {
     const userId = request.user?.userId;
 
     if (!userId) {
-      return false;
+      throw new ForbiddenException(
+        'No user ID found in JWT. Please authenticate with a valid token.',
+      );
     }
 
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
     });
+    if (!user)
+      throw new ForbiddenException(`User with ID ${userId} not found .`);
 
-    return user?.role === 'teacher';
+    if (user.role !== 'teacher') {
+      throw new ForbiddenException(
+        'Access denied. Only users with the teacher role can perform this action.',
+      );
+    }
+
+    return true;
   }
 }
